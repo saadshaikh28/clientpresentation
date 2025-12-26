@@ -631,3 +631,84 @@ h1 {
         transform: translateY(-8px);
     }
 }
+
+/* Print Styles for Presentation */
+@media print {
+    @page {
+        size: 375px auto;
+        margin: 0;
+    }
+
+    body {
+        background-color: white;
+        width: 375px;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .urgency-banner,
+    .navbar,
+    .cta-nav {
+        display: none !important;
+    }
+
+    .container {
+        width: 100% !important;
+        max-width: 375px !important;
+        padding: 20px !important;
+        margin: 0 !important;
+    }
+
+    section {
+        page-break-inside: avoid;
+        padding: 40px 0 !important;
+    }
+
+    h1 {
+        font-size: 32px !important;
+    }
+
+    h2 {
+        font-size: 24px !important;
+    }
+
+    .hero {
+        padding-top: 20px !important;
+    }
+
+    .hero-infographic,
+    .pricing-cards,
+    .workflow-steps,
+    .growth-grid,
+    .reco-grid {
+        display: block !important;
+    }
+
+    .info-card,
+    .step,
+    .pricing-card,
+    .callout-box,
+    .chat-mockup {
+        margin-bottom: 20px !important;
+        width: 100% !important;
+        transform: none !important;
+        box-shadow: none !important;
+        border: 1px solid #eee !important;
+    }
+
+    .pricing-card.popular {
+        border-width: 1px !important;
+    }
+
+    .arrow-connector {
+        display: none !important;
+    }
+
+    .chat-mockup {
+        max-width: none !important;
+    }
+
+    .whatsapp-comparison {
+        flex-direction: column !important;
+    }
+}
