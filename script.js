@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function startCountdown() {
         // Set target time: 24 hours from now
         let targetTime = localStorage.getItem('demoTargetTime');
-        
+
         if (!targetTime) {
             targetTime = new Date().getTime() + (24 * 60 * 60 * 1000);
             localStorage.setItem('demoTargetTime', targetTime);
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
             targetTime = parseInt(targetTime);
         }
 
-        const x = setInterval(function() {
+        const x = setInterval(function () {
             const now = new Date().getTime();
             const distance = targetTime - now;
 
@@ -22,9 +22,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            countdownElement.innerHTML = 
-                (hours < 10 ? "0" + hours : hours) + ":" + 
-                (minutes < 10 ? "0" + minutes : minutes) + ":" + 
+            countdownElement.innerHTML =
+                (hours < 10 ? "0" + hours : hours) + ":" +
+                (minutes < 10 ? "0" + minutes : minutes) + ":" +
                 (seconds < 10 ? "0" + seconds : seconds);
 
             if (distance < 0) {
@@ -36,6 +36,35 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     startCountdown();
+
+    // Load Configuration and Personalize
+    async function loadConfig() {
+        try {
+            const response = await fetch('/configs/default.json');
+            if (response.ok) {
+                const config = await response.json();
+                const businessName = config.companyName || config.name;
+
+                if (businessName) {
+                    // Update logo and footer
+                    document.querySelectorAll('.logo-text').forEach(el => el.textContent = businessName);
+                    const footerText = document.querySelector('.footer p');
+                    if (footerText) footerText.innerHTML = `&copy; ${new Date().getFullYear()} ${businessName}. Built for performance.`;
+                }
+
+                if (config.whatsappNumber) {
+                    // Update all WhatsApp links
+                    document.querySelectorAll('a[href*="wa.me"]').forEach(link => {
+                        link.href = `https://wa.me/${config.whatsappNumber.replace(/\+/g, '')}`;
+                    });
+                }
+            }
+        } catch (e) {
+            console.log('No custom config found, using defaults.');
+        }
+    }
+
+    loadConfig();
 
     // Intersection Observer for Reveal Animations
     const observerOptions = {
